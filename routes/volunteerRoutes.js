@@ -13,13 +13,16 @@ module.exports = (app, volunteersCollection) => {
 
   // Fetches registered events of the current user
   app.post("/volunteer/registeredevents", (req, res) => {
-    const email = req.body;
-    volunteersCollection.find({ email: email }).toArray((err, events) => {
-      if (events) {
-        res.status(200).send(events);
-      } else {
-        res.status(404).send("No event registered");
-      }
-    });
+    const email = req.body.email;
+    volunteersCollection
+      .find({ email: email })
+      .sort({ date: -1 })
+      .toArray((err, events) => {
+        if (events) {
+          res.status(200).send(events);
+        } else {
+          res.status(404).send("No event registered");
+        }
+      });
   });
 };

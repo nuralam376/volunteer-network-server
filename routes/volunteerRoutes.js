@@ -25,4 +25,14 @@ module.exports = (app, volunteersCollection) => {
         }
       });
   });
+
+  app.get("/volunteer/lists", (req, res) => {
+    volunteersCollection.find({}).toArray((err, events) => {
+      if (!err) {
+        res.status(200).send(events);
+        return;
+      }
+      res.status(404).send("No Data found");
+    });
+  });
 };

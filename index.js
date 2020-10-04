@@ -27,11 +27,13 @@ client.connect((err) => {
   }
   console.log("Database connected");
 
-  const eventsCollection = client
-    .db(`${process.env.DB_NAME}`)
-    .collection("events");
+  const db = client.db(`${process.env.DB_NAME}`);
+
+  const eventsCollection = db.collection("events");
+  const volunteersCollection = db.collection("volunteers");
 
   require("./routes/eventRoutes")(app, eventsCollection);
+  require("./routes/volunteerRoutes")(app, volunteersCollection);
 });
 
 app.get("/", (req, res) => {

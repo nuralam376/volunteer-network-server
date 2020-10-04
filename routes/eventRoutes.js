@@ -1,3 +1,5 @@
+const ObjectId = require("mongodb").ObjectID;
+
 module.exports = (app, eventsCollection) => {
   // Adds all events
   app.post("/addevents", (req, res) => {
@@ -17,5 +19,15 @@ module.exports = (app, eventsCollection) => {
       }
       res.status(404).send("No Data found");
     });
+  });
+
+  //   Fetches individual event information
+  app.get("/events/:id", (req, res) => {
+    const eventId = req.params.id;
+
+    eventsCollection
+      .findOne({ _id: ObjectId(eventId) })
+      .then((event) => res.status(200).send(event))
+      .catch((err) => res.status(404).send(false));
   });
 };

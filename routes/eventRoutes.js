@@ -21,6 +21,20 @@ module.exports = (app, eventsCollection) => {
     });
   });
 
+  // Adds new Event
+  app.post("/events/add", (req, res) => {
+    const event = req.body;
+    event.image = "/resources/images/extraVolunteer.png";
+
+    eventsCollection.insertOne(event).then((result) => {
+      if (result.insertedCount) {
+        res.status(200).send(true);
+        return;
+      }
+      res.status(404).send(false);
+    });
+  });
+
   //   Fetches individual event information
   app.get("/events/:id", (req, res) => {
     const eventId = req.params.id;

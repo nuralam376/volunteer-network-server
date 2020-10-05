@@ -16,18 +16,16 @@ module.exports = (app, volunteersCollection) => {
   // Fetches registered events of the current user
   app.post("/volunteer/registeredevents", (req, res) => {
     const email = req.body.email;
-    volunteersCollection
-      .find({ email: email })
-      .sort({ date: -1 })
-      .toArray((err, events) => {
-        if (events) {
-          res.status(200).send(events);
-        } else {
-          res.status(404).send("No event registered");
-        }
-      });
+    volunteersCollection.find({ email: email }).toArray((err, events) => {
+      if (events) {
+        res.status(200).send(events);
+      } else {
+        res.status(404).send("No event registered");
+      }
+    });
   });
 
+  // Fetches all registered volunteer lists
   app.get("/volunteer/lists", (req, res) => {
     volunteersCollection.find({}).toArray((err, events) => {
       if (!err) {
@@ -38,7 +36,7 @@ module.exports = (app, volunteersCollection) => {
     });
   });
 
-  // Deletes the registeres event
+  // Deletes the registeres volunteer event
   app.delete("/volunteer/event/delete", (req, res) => {
     volunteersCollection
       .deleteOne({ _id: ObjectId(req.body.id) })
